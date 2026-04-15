@@ -2,7 +2,7 @@
 
 **Packet capture generator for detection engineers.**
 
-PCAP-Forge is a self-contained, browser-based tool that generates valid libpcap `.pcap` and PCAP-NG `.pcapng` files from structured input or pasted protocol data — no server, no install, no dependencies beyond a modern web browser. Open the HTML file and start generating.
+PCAP-Forge is a self-contained, browser-based tool that generates valid libpcap `.pcap` and PCAP-NG `.pcapng` files from structured input or pasted protocol data - no server, no install, no dependencies beyond a modern web browser. Open the HTML file and start generating.
 
 It bridges the gap between having a threat intelligence report describing a specific protocol exchange and actually being able to test a detection rule against realistic traffic.
 
@@ -16,7 +16,7 @@ It bridges the gap between having a threat intelligence report describing a spec
 4. Click **⬡ GENERATE PCAP**
 5. Open the result in Wireshark, replay with `tcpreplay`, or feed it to Zeek/Suricata
 
-> **Note:** Open the file locally by double-clicking it. Do not serve it through a CDN or cloud proxy — some CDN edge networks (e.g. Cloudflare) will rewrite the file contents.
+> **Note:** Open the file locally by double-clicking it. Do not serve it through a CDN or cloud proxy - some CDN edge networks (e.g. Cloudflare) will rewrite the file contents.
 
 ---
 
@@ -38,22 +38,22 @@ Every protocol generates a complete, realistic session with correct checksums (I
 | **IoT / OT / ICS** | MQTT, Modbus TCP, DNP3 |
 | **Raw** | UDP |
 
-Each generator produces the full protocol lifecycle — TCP handshake and teardown, authentication sequences, application data, and graceful close — not just a single packet.
+Each generator produces the full protocol lifecycle: TCP handshake and teardown, authentication sequences, application data, and graceful close, not just a single packet.
 
 ### Detection Rule Generation
 
 After generating a PCAP, three rule formats are produced automatically from the session's parsed fields:
 
-- **Sigma** — Structured detection rule targeting protocol-specific observables (DNS QNAME, TLS SNI, SMB share path, LDAP filter, Kerberos SPN, etc.) with correct `logsource` for Zeek, `tags` with ATT&CK technique IDs, and `falsepositives`/`level` stubs
-- **Suricata** — `alert` rule with correct protocol keyword, `flow` direction, `content` matches (hex patterns for binary protocols, text matches for cleartext), sticky buffers (`dns.query`, `tls.sni`, `http.host`), and full `metadata` block
-- **Snort** — Same content in Snort 3 format with `metadata:service` field
-- **YARA** — `rule` block with wire-format hex signatures, text protocol command strings, and session-specific field values; if a file payload was injected, the file's magic bytes are extracted as a `$file_magic` hex string
+- **Sigma** - Structured detection rule targeting protocol-specific observables (DNS QNAME, TLS SNI, SMB share path, LDAP filter, Kerberos SPN, etc.) with correct `logsource` for Zeek, `tags` with ATT&CK technique IDs, and `falsepositives`/`level` stubs
+- **Suricata** - `alert` rule with correct protocol keyword, `flow` direction, `content` matches (hex patterns for binary protocols, text matches for cleartext), sticky buffers (`dns.query`, `tls.sni`, `http.host`), and full `metadata` block
+- **Snort** - Same content in Snort 3 format with `metadata:service` field
+- **YARA** - `rule` block with wire-format hex signatures, text protocol command strings, and session-specific field values; if a file payload was injected, the file's magic bytes are extracted as a `$file_magic` hex string
 
 All three formats include MITRE ATT&CK technique IDs and can be copied to clipboard or downloaded directly.
 
 ### MITRE ATT&CK Mapping
 
-Every session displays the relevant ATT&CK technique and tactic in the INFO tab — linked directly to the ATT&CK website. All 34 protocols are mapped.
+Every session displays the relevant ATT&CK technique and tactic in the INFO tab linked directly to the ATT&CK website. All 34 protocols are mapped.
 
 ### PCAP Import & Parse
 
@@ -86,7 +86,7 @@ Toggle realistic background traffic around the generated session — DNS lookups
 
 ### Anomaly Mode
 
-Introduce protocol-specific wire-format malformations into the generated PCAP — invalid TCP data offsets, URG flags on SMTP, TTL=1 on POP3, corrupted SMB2 magic bytes, invalid DNS QTYPE 0xFFFF, SSL2 version bytes in a TLS record, and more. Useful for testing whether IDS/IPS parsers handle edge cases gracefully.
+Introduce protocol-specific wire-format malformations into the generated PCAP: invalid TCP data offsets, URG flags on SMTP, TTL=1 on POP3, corrupted SMB2 magic bytes, invalid DNS QTYPE 0xFFFF, SSL2 version bytes in a TLS record, and more. Useful for testing whether IDS/IPS parsers handle edge cases gracefully.
 
 ### Session Templates
 
@@ -101,19 +101,19 @@ Six built-in detection scenarios load with one click:
 | ICS Recon | Modbus READ_HOLDING_REGISTERS bulk enumeration |
 | Web C2 | HTTP POST beacon with custom headers |
 
-Save your own templates by name — they persist across sessions via `localStorage`.
+Save your own templates by name, they persist across sessions via `localStorage`.
 
 ### Export
 
 From the packet summary panel:
 
-- **CSV** — Frame list with No, Time, Source, Destination, Protocol, Info columns
-- **JSON** — Same data as a typed JSON array
-- **PCAP-NG** — Full PCAP Next Generation format with Section Header Block, Interface Description Block, and Enhanced Packet Blocks. If a session note is entered in the INFO tab, it is embedded as an EPB `opt_comment` in every frame.
+- **CSV** - Frame list with No, Time, Source, Destination, Protocol, Info columns
+- **JSON** - Same data as a typed JSON array
+- **PCAP-NG** - Full PCAP Next Generation format with Section Header Block, Interface Description Block, and Enhanced Packet Blocks. If a session note is entered in the INFO tab, it is embedded as an EPB `opt_comment` in every frame.
 
 ### Protocol Explainer
 
-A collapsible panel below the results explains what each packet in the generated session means to an analyst — overview of the protocol, frame-by-frame security relevance ("this is where the NTLMSSP challenge is captured for offline cracking"), and threat hunting notes with specific IOCs and patterns to look for. All 34 protocols have full explainer content.
+A collapsible panel below the results explains what each packet in the generated session means to an analyst: overview of the protocol, frame-by-frame security relevance ("this is where the NTLMSSP challenge is captured for offline cracking"), and threat hunting notes with specific IOCs and patterns to look for. All 34 protocols have full explainer content.
 
 ### File Payload Injection
 
